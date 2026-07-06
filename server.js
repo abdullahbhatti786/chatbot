@@ -47,17 +47,11 @@ const groq = new Groq({
 });
 
 // --- Step 4: Middlewares lagao ---
-// cors(): Ye har request pe CORS headers add karta hai
-// Matlab frontend chahe kisi bhi domain se ho, backend se baat kar sakta hai
 app.use(cors());
-
-// express.json(): Ye incoming request ki body ko JSON se JavaScript object mein convert karta hai
-// Bina iske req.body undefined hoga!
 app.use(express.json());
 
-// express.static(): Ye "public" folder ki files directly serve karta hai
-// Jaise index.html, style.css, script.js — ye sab bina route banaye serve ho jayengi
-app.use(express.static(path.join(__dirname, "public")));
+// Remove express.static since files are now in root and we will manually serve them
+// app.use(express.static(path.join(__dirname, "public")));
 
 // --- Step 5: System prompt define karo ---
 // Ye bot ko batata hai ke uska role kya hai
@@ -76,12 +70,16 @@ Your primary role:
 6. If you don't have specific DeemCloud information to answer a question, suggest they visit deemcloud.com or contact the team.
 7. IMPORTANT BOOKING INSTRUCTION: If the user wants to book a meeting or contact DeemCloud, proactively ask for their Name, Email, Phone number, and preferred Meeting Time. Once you have collected ALL FOUR details, you MUST reply with a special hidden tag exactly like this: [BOOK_MEETING: {"name": "...", "email": "...", "phone": "...", "time": "..."}] and then tell the user that their meeting has been booked and our team will contact them shortly.
 
-IMPORTANT: When DeemCloud context is provided below, use it to give accurate answers. Do NOT make up information about DeemCloud.`;
-
 // --- Root route for Vercel ---
-// Vercel par "Cannot GET /" ka issue fix karne ke liye explicitly index.html serve karo
+// Vercel par "Cannot GET /" fix: files bahar root mein hone ki wajah se manual routes banaye hain
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'style.css'));
+});
+app.get('/script.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'script.js'));
 });
 
 // --- Step 6: Chat endpoint banao ---
