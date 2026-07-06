@@ -78,6 +78,12 @@ Your primary role:
 
 IMPORTANT: When DeemCloud context is provided below, use it to give accurate answers. Do NOT make up information about DeemCloud.`;
 
+// --- Root route for Vercel ---
+// Vercel par "Cannot GET /" ka issue fix karne ke liye explicitly index.html serve karo
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // --- Step 6: Chat endpoint banao ---
 // POST /chat — ye frontend se user ka message receive karega
 // Aur Groq API se AI ka jawab le ke wapas bhejega
