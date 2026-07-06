@@ -1,0 +1,28 @@
+{
+  "name": "nexus-assistant",
+  "version": "1.0.0",
+  "description": "Nexus Assistant — AI Chatbot powered by Aura AI (Groq + LLaMA)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "scrape": "node scraper.js"
+  },
+  "keywords": [
+    "chatbot",
+    "groq",
+    "llama",
+    "express",
+    "ai"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "groq-sdk": "^0.15.0",
+    "mongoose": "^9.7.3",
+    "sqlite3": "^5.1.7"
+  }
+}
