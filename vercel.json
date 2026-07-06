@@ -8,7 +8,6 @@
   ],
   "rewrites": [
     { "source": "/chat", "destination": "/server.js" },
-    { "source": "/scrape", "destination": "/server.js" },
-    { "source": "/(.*)", "destination": "/public/$1" }
+    { "source": "/scrape", "destination": "/server.js" }
   ]
 }
