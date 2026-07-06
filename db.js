@@ -30,14 +30,19 @@ const Message = mongoose.model('Message', messageSchema);
 const Knowledge = mongoose.model('Knowledge', knowledgeSchema);
 const Lead = mongoose.model('Lead', leadSchema);
 
-// --- Connect Function ---
+let isConnected = false;
+
 async function connectDB() {
   if (!process.env.MONGODB_URI) {
-    console.error("❌ MONGODB_URI missing in .env file");
+    console.error("❌ MONGODB_URI missing in environment variables");
+    return;
+  }
+  if (isConnected) {
     return;
   }
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const db = await mongoose.connect(process.env.MONGODB_URI);
+    isConnected = db.connections[0].readyState === 1;
     console.log("✅ MongoDB Atlas se connect ho gaya!");
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err.message);

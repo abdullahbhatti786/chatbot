@@ -89,6 +89,8 @@ app.get('/script.js', (req, res) => {
 // Aur Groq API se AI ka jawab le ke wapas bhejega
 app.post("/chat", async (req, res) => {
   try {
+    await connectDB(); // Ensure DB is connected in serverless
+    
     // req.body se message aur conversationId nikalo
     // Frontend ye bhejta hai: { message: "user ka text", conversationId: "conv_12345" }
     // Agar conversationId nahi mila toh "default" use karo
@@ -221,28 +223,13 @@ app.post("/chat", async (req, res) => {
 // Taake agar website pe kuch naya aaye toh bot ka knowledge update ho sake
 app.post("/scrape", async (req, res) => {
   try {
+    await connectDB(); // Ensure DB is connected in serverless
     const { scrapeAndSave } = require("./scraper");
     await scrapeAndSave();
     res.json({ success: true, message: "DeemCloud knowledge base updated successfully!" });
   } catch (error) {
     console.error("❌ Scrape error:", error.message);
     res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// --- Step 8: MongoDB Connect karo aur Server start karo ---
-connectDB().then(() => {
-  // Sirf tabhi listen karo jab locally chal raha ho (Vercel khud handle karta hai)
-  if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => {
-      console.log("");
-      console.log("🤖 ====================================");
-      console.log(`   Nexus Assistant server chal raha hai!`);
-      console.log(`   🧠 DeemCloud RAG Knowledge Base Active`);
-      console.log(`   🌐 http://localhost:${PORT}`);
-      console.log("   ====================================");
-      console.log("");
-    });
   }
 });
 
